@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/vecino_merchant
+    username: root
+    password: 123456
+  sql:
+    init:
+      mode: always
+  jackson:
+    default-property-inclusion: non_null
+
+logging:
+  level:
+    sql: debug
+    org:
+      example: debug
+  pattern:
+    console: '%-5level %C.%M[%line] - %msg%n'
+springdoc:
+  api-docs:
+    enabled: true # 开启OpenApi接口
+    path: /v3/api-docs  # 自定义路径，默认为 "/v3/api-docs"
+  swagger-ui:
+    enabled: true # 开启swagger界面，依赖OpenApi，需要OpenApi同时开启
+    path: /swagger-ui/index.html # 自定义路径，默认为"/swagger-ui/index.html"
+
+
+#debug: true
+
+my:
+  secretkey: Jsbjfhjj09

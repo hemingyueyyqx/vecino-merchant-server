@@ -1,0 +1,64 @@
+spring:
+  datasource:
+    url: jdbc:mysql://${dhost}/vecino_merchant
+    username: ${dusername}
+    password: ${dpassword}
+#  spring.sql.init.mode：该属性用于控制 SQL 脚本的初始化模式。always 表示每次应用启动时都会执行 SQL 脚本进行数据库初始化。其他可选值包括 never（从不执行）、embedded（仅对嵌入式数据库执行）等。
+  sql:
+    init:
+      mode: always
+#      spring.r2dbc.url：R2DBC 数据库连接的 URL。r2dbcs 是 R2DBC 的协议前缀，mysql 表示使用 MySQL 数据库，${dhost} 是一个占位符，实际的值会从环境变量或其他配置源中获取，se_invigilation 是要连接的数据库名称。
+#      spring.r2dbc.username 和 spring.r2dbc.password：数据库的用户名和密码，同样使用占位符从其他配置源获取实际值。
+#      spring.r2dbc.pool.enabled：是否启用连接池，true 表示启用。
+#      spring.r2dbc.pool.max-size：连接池的最大连接数，这里设置为 200。
+#      spring.r2dbc.pool.initial-size：连接池的初始连接数，这里设置为 1。
+#  r2dbc:
+#    url: 'r2dbcs:mysql://${dhost}/se_invigilation'
+#    username: ${DB_USERNAME}
+#    password: ${DB_PASSWORD}
+#    pool:
+#      enabled: true
+#      max-size: 200
+#      initial-size: 1
+#  spring.codec.max-in-memory-size：设置编解码器在内存中处理数据的最大大小，这里设置为 2MB。当处理的数据超过这个大小时，可能会抛出异常。
+  codec:
+    max-in-memory-size: 2MB
+#  spring.jackson.default-property-inclusion：配置 Jackson 在序列化对象时如何处理属性。non_null 表示只包含非空属性，即当对象的某个属性值为 null 时，该属性不会被序列化到 JSON 中
+  jackson:
+    default-property-inclusion: non_null
+#  logging.level：用于配置不同包和类的日志级别。
+#  root：根日志级别，设置为 warn 表示只记录警告及以上级别的日志。
+#  com.se：指定 com.se 包及其子包的日志级别为 info，即记录信息及以上级别的日志。
+#  logging.pattern.console：配置控制台日志的输出格式。
+#  %-5level：日志级别，左对齐，宽度为 5 个字符。
+#  %C.%M[%line]：类名、方法名和行号。
+#  %msg：日志消息。
+#  %n：换行符。
+#logging:
+#  level:
+#    root: warn
+#    com:
+#      se: info
+#  pattern:
+#    console: '%-5level %C.%M[%line] - %msg%n'
+logging:
+  level:
+    root: warn
+    org:
+      example: debug
+  pattern:
+    console: '%-5level %C.%M[%line] - %msg%n'
+springdoc:
+  api-docs:
+    enabled: true # 开启OpenApi接口
+    path: /v3/api-docs  # 自定义路径，默认为 "/v3/api-docs"
+  swagger-ui:
+    enabled: true # 开启swagger界面，依赖OpenApi，需要OpenApi同时开启
+    path: /swagger-ui/index.html # 自定义路径，默认为"/swagger-ui/index.html"
+#  dingtalk.appkey、dingtalk.appsecret 和 dingtalk.agentid：用于配置钉钉开放平台的应用信息，这些信息通常用于与钉钉进行接口交互，如发送消息等。实际的值会从环境变量或其他配置源中获取。
+#dingtalk:
+#  appkey: ${dingtalk_appkey}
+#  appsecret: ${dingtalk_appsecret}
+#  agentid: ${dingtalk_agentid}
+my:
+  secretkey: ${secretkey}
