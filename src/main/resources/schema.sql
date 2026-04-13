@@ -28,6 +28,8 @@ CREATE TABLE IF NOT EXISTS `shop_info` (
                              `shop_name` VARCHAR(200) NOT NULL COMMENT '店铺名称',
                              `shop_type` VARCHAR(100) NOT NULL COMMENT '店铺类型（如：生鲜、便利店、餐饮等）',
                              `address` VARCHAR(500) NOT NULL COMMENT '店铺物理地址',
+                             `business_license` VARCHAR(20) NOT NULL COMMENT '营业执照注册号',
+                             `legal_person` VARCHAR(10) NOT NULL COMMENT '法人姓名',
                              `status`  tinyint unsigned not null default 1 COMMENT '店铺状态：正常0/禁用1/待审核2',
                              `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                              `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',

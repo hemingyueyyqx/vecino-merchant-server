@@ -22,7 +22,9 @@ public class ShopInfo {
     private String shopType;
     private String businessId;
     private String address;
-    private int status;
+    private String businessLicense;
+    private String legalPerson;
+    private Integer status;
     @ReadOnlyProperty
     private LocalDateTime createTime;
     @ReadOnlyProperty
