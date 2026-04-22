@@ -25,6 +25,7 @@ public class ShopInfo {
     private String businessLicense;
     private String legalPerson;
     private Integer status;
+    private String auditReason;
     @ReadOnlyProperty
     private LocalDateTime createTime;
     @ReadOnlyProperty

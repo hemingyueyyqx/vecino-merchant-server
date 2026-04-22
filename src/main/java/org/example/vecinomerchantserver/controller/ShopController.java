@@ -18,4 +18,15 @@ public class ShopController {
     public ResultVo apply(@RequestBody ShopInfo shopInfo,@RequestAttribute("uid") String uid) {
         return shopService.apply(shopInfo, uid);
     }
+//    审核通过
+    @PutMapping("shop/audit/pass")
+    public ResultVo auditPass(@RequestBody ShopInfo shopInfo) {
+        return shopService.auditPass(shopInfo);
+    }
+//    审核驳回
+    @PutMapping("shop/audit/reject")
+    public ResultVo auditReject(@RequestBody ShopInfo shopInfo) {
+        return shopService.auditReject(shopInfo);
+    }
+
 }

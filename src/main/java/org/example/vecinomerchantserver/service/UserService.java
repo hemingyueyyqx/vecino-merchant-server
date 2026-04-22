@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -71,5 +72,13 @@ public class UserService {
         }
         return map;
     }
-
+//    获取所有商家用户
+    @Transactional
+    public ResultVo getAllMerchants(String role) {
+        if(!role.equals(User.ADMIN)){
+            return ResultVo.builder().code(Code.FORBIDDEN.getCode()).message(Code.FORBIDDEN.getMessage()).build();
+        }
+        List<User> merchants = userRepository.findAllByRole(User.BUSINESS);
+        return ResultVo.success( merchants);
+    }
 }

@@ -6,8 +6,12 @@ spring:
   sql:
     init:
       mode: always
+  data:
+    jdbc:
+      mapping:
+        underscore-to-lower-camel-case: true
   jackson:
-    default-property-inclusion: non_null
+    default-property-inclusion: always
 
 logging:
   level:
