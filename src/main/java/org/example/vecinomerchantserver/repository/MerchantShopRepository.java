@@ -10,7 +10,8 @@ import java.util.List;
 public interface MerchantShopRepository extends ListCrudRepository<MerchantShop, String> {
     @Query(value = """
 select u.id ,s.id,u.nickname,u.account,u.phone,s.shop_name ,
-       s.shop_type ,
+       s.first_category ,
+       s.second_category,
        s.address,
        s.status,
        s.legal_person ,

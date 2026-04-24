@@ -27,7 +27,8 @@ public class MerchantShop {
     private String account;       // 商家登录账号
     private String legalPerson;   // 法人
     private String phone;        // 商家电话
-    private String shopType;     // 店铺类型
+    private String firstCategory;
+    private String secondCategory;
     private String address;      // 店铺地址
     private String businessLicense; // 营业执照
     private Integer status;       // 店铺状态 0正常 1禁用 2待审核

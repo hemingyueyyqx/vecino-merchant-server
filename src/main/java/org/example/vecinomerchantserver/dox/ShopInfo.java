@@ -19,7 +19,8 @@ public class ShopInfo {
     @CreatedBy
     private String id;
     private String shopName;
-    private String shopType;
+    private String firstCategory;
+    private String secondCategory;
     private String businessId;
     private String address;
     private String businessLicense;

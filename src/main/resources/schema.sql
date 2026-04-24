@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS `shop_info` (
                              `id` VARCHAR(64) NOT NULL COMMENT '店铺唯一标识',
                              `business_id` VARCHAR(64) NOT NULL COMMENT '所属商户ID（关联user表id，仅role=business的用户）',
                              `shop_name` VARCHAR(20) NOT NULL COMMENT '店铺名称',
-                             `shop_type` VARCHAR(10) NOT NULL COMMENT '店铺类型（如：生鲜、便利店、餐饮等）',
+                             `first_category` VARCHAR(32) NULL COMMENT '一级类目编码',
+                             `second_category` VARCHAR(32) NULL COMMENT '二级类目编码',
                              `address` VARCHAR(500) NOT NULL COMMENT '店铺物理地址',
                              `business_license` VARCHAR(20) NOT NULL COMMENT '营业执照注册号',
                              `legal_person` VARCHAR(10) NOT NULL COMMENT '法人姓名',
@@ -40,20 +41,3 @@ CREATE TABLE IF NOT EXISTS `shop_info` (
                              KEY `idx_status` (`status`),
                              CONSTRAINT `fk_shop_business` FOREIGN KEY (`business_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商户店铺信息表';
-select u.id ,s.id,u.nickname,u.account,u.phone,s.shop_name ,
-       s.shop_type ,
-       s.address,
-       s.status,
-       s.legal_person ,
-       s.business_license,
-       s.audit_reason,
-       s.update_time
-
-from `user` u
-         join shop_info s on u.id = s.business_id
-where u.role = 'Sj08';
-select u.*,s.*
-
-from `user` u
-         join shop_info s on u.id = s.business_id
-where u.role = 'Sj08';

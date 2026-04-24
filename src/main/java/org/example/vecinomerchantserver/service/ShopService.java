@@ -24,7 +24,8 @@ public class ShopService {
         if(shopInfo.getId() != null && !shopInfo.getId().isEmpty()) {
             ShopInfo s = shopInfoRepository.findById(shopInfo.getId()).get();
             s.setShopName(shopInfo.getShopName());
-            s.setShopType(shopInfo.getShopType());
+            s.setFirstCategory(shopInfo.getFirstCategory());
+            s.setSecondCategory(shopInfo.getSecondCategory());
             s.setAddress(shopInfo.getAddress());
             s.setBusinessLicense(shopInfo.getBusinessLicense());
             s.setLegalPerson(shopInfo.getLegalPerson());
@@ -34,7 +35,8 @@ public class ShopService {
         }else {
             ShopInfo shopInfo1 = ShopInfo.builder()
                     .shopName(shopInfo.getShopName())
-                    .shopType(shopInfo.getShopType())
+                    .firstCategory(shopInfo.getFirstCategory())
+                    .secondCategory(shopInfo.getSecondCategory())
                     .businessId(uid)
                     .address(shopInfo.getAddress())
                     .businessLicense(shopInfo.getBusinessLicense())
