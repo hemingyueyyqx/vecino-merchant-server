@@ -62,8 +62,8 @@ CREATE TABLE IF NOT EXISTS `product_category` (
 CREATE TABLE IF NOT EXISTS `product_spu` (
                                `id` varchar(64) NOT NULL COMMENT 'SPU唯一标识（主键）',
                                `shop_id` varchar(64) NOT NULL COMMENT '所属店铺ID',
+                               `shop_name` varchar(20) NOT NULL COMMENT '店铺名称',
                                `spu_name` varchar(200) NOT NULL COMMENT '商品名称',
-                               `category_id` varchar(64) NOT NULL COMMENT '归属类目ID',
                                `main_image` varchar(500) NOT NULL COMMENT '商品主图',
                                `detail` varchar(500) NOT NULL COMMENT '商品详情',
                                `audit_status` tinyint NOT NULL DEFAULT 0 COMMENT '类目审核状态（0=待审核，1=审核通过，2=审核驳回）',
@@ -72,8 +72,8 @@ CREATE TABLE IF NOT EXISTS `product_spu` (
                                `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                                `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
                                PRIMARY KEY (`id`),
+                               UNIQUE KEY `uk_spu_name` (`spu_name`),
                                KEY `idx_shop_id` (`shop_id`),
-                               KEY `idx_category_id` (`category_id`),
                                KEY `idx_audit_status` (`audit_status`),
                                KEY `idx_status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品标准单元表（商家端商品核心）';

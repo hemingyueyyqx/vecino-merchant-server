@@ -20,7 +20,7 @@ public class ProductInfoResultSetExtractor implements ResultSetExtractor<List<Pr
         Map<String, ProductInfo> productInfoMap = new LinkedHashMap<>();
         while (rs.next()) {
             // 1. 先拿到当前行的 spu_id
-            String spuId = rs.getString("spu_id");
+            String spuId = rs.getString("s.id");
 
             // 2. 判断这个SPU是否已经创建过
             ProductInfo productInfo = productInfoMap.get(spuId);
@@ -29,8 +29,8 @@ public class ProductInfoResultSetExtractor implements ResultSetExtractor<List<Pr
                 productInfo = ProductInfo.builder()
                         .spuId(rs.getString("s.id"))
                         .shopId(rs.getString("shop_id"))
+                        .shopName(rs.getString("shop_name"))
                         .spuName(rs.getString("spu_name"))
-                        .categoryId(rs.getString("category_id"))
                         .mainImage(rs.getString("main_image"))
                         .detail(rs.getString("detail"))
                         .auditStatus(rs.getInt("audit_status"))
@@ -50,6 +50,7 @@ public class ProductInfoResultSetExtractor implements ResultSetExtractor<List<Pr
             if (skuId != null) {
                 ProductSku skuInfo = ProductSku.builder()
                         .id(skuId)
+                        .spuId(spuId)
                         .price(rs.getBigDecimal("price"))
                         .specAttr(rs.getString("spec_attr"))
                         .stockNum(rs.getInt("stock_num"))

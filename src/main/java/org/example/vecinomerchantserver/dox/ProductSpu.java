@@ -19,8 +19,8 @@ public class ProductSpu {
     @CreatedBy
     private String id;
     private String shopId;
+    private  String shopName;
     private String spuName;
-    private String categoryId;
     private String mainImage;
     private String detail;
     private Integer auditStatus;

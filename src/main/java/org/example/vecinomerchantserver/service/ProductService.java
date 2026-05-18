@@ -6,6 +6,7 @@ import org.example.vecinomerchantserver.dox.ProductSku;
 import org.example.vecinomerchantserver.dox.ProductSpu;
 import org.example.vecinomerchantserver.dox.ShopInfo;
 import org.example.vecinomerchantserver.dox.User;
+import org.example.vecinomerchantserver.dto.BatchStatusRequest;
 import org.example.vecinomerchantserver.dto.ProductInfo;
 import org.example.vecinomerchantserver.repository.ProductRepository;
 import org.example.vecinomerchantserver.repository.ProductSkuRepository;
@@ -26,9 +27,12 @@ public class ProductService {
     private final ProductSpuRepository productSpuRepository;
     private final ProductSkuRepository productSkuRepository;
     @Transactional
-    public List<ProductInfo> findProductInfo(String uid, ProductSpu spu) {
+    public List<ProductInfo> findProductInfo(String uid, ProductInfo spu) {
         ShopInfo shopInfo = shopInfoRepository.findByBusinessId(uid);
-        return productRepository.findProductInfo(shopInfo.getId(), spu.getSpuName());
+        String spuName = spu.getSpuName();
+        Integer spuStatus = spu.getSpuStatus();
+        Integer auditStatus = spu.getAuditStatus();
+        return productRepository.findProductInfo(shopInfo.getId(), spuName, spuStatus, auditStatus);
     }
 //    添加商品
     @Transactional
@@ -37,13 +41,13 @@ public class ProductService {
         // 创建并保存SPU
         ProductSpu spu = ProductSpu.builder()
                 .shopId(shopInfo.getId())
+                .shopName(shopInfo.getShopName())
                 .spuName(productInfo.getSpuName())
-                .categoryId(productInfo.getCategoryId())
                 .mainImage(productInfo.getMainImage())
                 .detail(productInfo.getDetail())
                 .auditStatus(productInfo.getAuditStatus() != null ? productInfo.getAuditStatus() : 0) // 默认待审核
                 .auditRemark(productInfo.getAuditRemark())
-                .status(productInfo.getSpuStatus() != null ? productInfo.getSpuStatus() : 1) // 默认上架状态
+                .status(productInfo.getSpuStatus() != null ? productInfo.getSpuStatus() : 0) // 默认上架状态
                 .build();
 
         // 保存SPU到数据库
@@ -62,6 +66,69 @@ public class ProductService {
 
                 // 保存SKU到数据库
                 productSkuRepository.save(skuInfo);
+            }
+        }
+    }
+//    编辑spu
+    @Transactional
+    public void updateProductSpu(ProductSpu spu) {
+        ProductSpu productSpu = productSpuRepository.findById(spu.getId()).orElse(null);
+        if (productSpu != null) {
+            if (spu.getSpuName() != null) {
+                productSpu.setSpuName(spu.getSpuName());
+            }
+            if (spu.getMainImage() != null) {
+                productSpu.setMainImage(spu.getMainImage());
+            }
+            if (spu.getDetail() != null) {
+                productSpu.setDetail(spu.getDetail());
+            }
+            if (spu.getAuditStatus() != null) {
+                productSpu.setAuditStatus(spu.getAuditStatus());
+            }
+            if (spu.getAuditRemark() != null) {
+                productSpu.setAuditRemark(spu.getAuditRemark());
+            }
+            if (spu.getStatus() != null) {
+                productSpu.setStatus(spu.getStatus());
+            }
+            productSpuRepository.save(productSpu);
+        }
+
+    }
+//    编辑sku
+    @Transactional
+    public void updateProductSku(ProductSku sku) {
+        ProductSku productSku = productSkuRepository.findById(sku.getId()).orElse(null);
+        if (productSku != null) {
+            if (sku.getSpecAttr() != null) {
+                productSku.setSpecAttr(sku.getSpecAttr());
+            }
+            if (sku.getPrice() != null) {
+                productSku.setPrice(sku.getPrice());
+            }
+            if (sku.getStockNum() != null) {
+                productSku.setStockNum(sku.getStockNum());
+            }
+            if (sku.getWarnStock() != null) {
+                productSku.setWarnStock(sku.getWarnStock());
+            }
+            if (sku.getStatus() != null) {
+                productSku.setStatus(sku.getStatus());
+            }
+            productSkuRepository.save(productSku);
+        }
+    }
+//    商品批量上下架
+    @Transactional
+    public void batchUpdateStatus(BatchStatusRequest  request) {
+        List<String> spuIds = request.getSpuIds();
+        Integer status = request.getStatus();
+        for (String spuId : spuIds) {
+            ProductSpu productSpu = productSpuRepository.findById(spuId).orElse(null);
+            if (productSpu != null) {
+                productSpu.setStatus(status);
+                productSpuRepository.save(productSpu);
             }
         }
     }
