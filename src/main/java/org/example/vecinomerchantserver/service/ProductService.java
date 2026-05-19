@@ -45,9 +45,9 @@ public class ProductService {
                 .spuName(productInfo.getSpuName())
                 .mainImage(productInfo.getMainImage())
                 .detail(productInfo.getDetail())
-                .auditStatus(productInfo.getAuditStatus() != null ? productInfo.getAuditStatus() : 0) // 默认待审核
+                .auditStatus(productInfo.getAuditStatus() != null ? productInfo.getAuditStatus() : 1) // 默认待审核
                 .auditRemark(productInfo.getAuditRemark())
-                .status(productInfo.getSpuStatus() != null ? productInfo.getSpuStatus() : 0) // 默认上架状态
+                .status(productInfo.getSpuStatus() != null ? productInfo.getSpuStatus() : 1) // 默认上架状态
                 .build();
 
         // 保存SPU到数据库

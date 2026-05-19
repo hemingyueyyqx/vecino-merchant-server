@@ -19,7 +19,7 @@ public class MerchantService {
     private final MerchantShopRepository merchantShopRepository;
     @Transactional
     public ResultVo findMerchantShop(String role) {
-        if(!role.equals(User.ADMIN)){
+        if(!role.equals(User.ADMIN) && !role.equals(User.CUSTOMER)){
             return ResultVo.builder().code(Code.FORBIDDEN.getCode()).message(Code.FORBIDDEN.getMessage()).build();
         }
         List<MerchantShop> merchants = merchantShopRepository.findMerchantShop();

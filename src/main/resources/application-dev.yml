@@ -32,5 +32,5 @@ springdoc:
 #debug: true
 
 my:
-  secretkey: Jsbjfhjj09
-  aliyunkey: sk-42e7fa77299044aaaaa50972fabd80cd
+  secretkey: ${JWT_SECRET_KEY}
+  aliyunkey: ${ALIYUN_API_KEY}
