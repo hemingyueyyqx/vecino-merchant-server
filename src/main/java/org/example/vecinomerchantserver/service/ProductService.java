@@ -28,11 +28,19 @@ public class ProductService {
     private final ProductSkuRepository productSkuRepository;
     @Transactional
     public List<ProductInfo> findProductInfo(String uid, ProductInfo spu) {
+        String shopId;
         ShopInfo shopInfo = shopInfoRepository.findByBusinessId(uid);
+        if(shopInfo != null && shopInfo.getId() != null){
+            shopId = shopInfo.getId();
+        } else if(spu.getShopId() != null){
+            shopId = spu.getShopId();
+        } else {
+            shopId = null;
+        }
         String spuName = spu.getSpuName();
         Integer spuStatus = spu.getSpuStatus();
         Integer auditStatus = spu.getAuditStatus();
-        return productRepository.findProductInfo(shopInfo.getId(), spuName, spuStatus, auditStatus);
+        return productRepository.findProductInfo(shopId, spuName, spuStatus, auditStatus);
     }
 //    添加商品
     @Transactional

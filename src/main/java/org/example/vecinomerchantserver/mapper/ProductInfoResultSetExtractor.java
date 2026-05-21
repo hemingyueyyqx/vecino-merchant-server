@@ -51,7 +51,7 @@ public class ProductInfoResultSetExtractor implements ResultSetExtractor<List<Pr
                 ProductSku skuInfo = ProductSku.builder()
                         .id(skuId)
                         .spuId(spuId)
-                        .price(rs.getBigDecimal("price"))
+                        .price(rs.getInt("price"))
                         .specAttr(rs.getString("spec_attr"))
                         .stockNum(rs.getInt("stock_num"))
                         .warnStock(rs.getInt("warn_stock"))

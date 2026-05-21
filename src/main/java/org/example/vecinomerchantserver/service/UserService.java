@@ -2,10 +2,13 @@ package org.example.vecinomerchantserver.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.vecinomerchantserver.dox.Address;
 import org.example.vecinomerchantserver.dox.ShopInfo;
 import org.example.vecinomerchantserver.dox.User;
+import org.example.vecinomerchantserver.dto.UserAddress;
 import org.example.vecinomerchantserver.exception.Code;
 import org.example.vecinomerchantserver.exception.XException;
+import org.example.vecinomerchantserver.repository.AddressRepository;
 import org.example.vecinomerchantserver.repository.ShopInfoRepository;
 import org.example.vecinomerchantserver.repository.UserRepository;
 import org.example.vecinomerchantserver.vo.ResultVo;
@@ -24,6 +27,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ShopInfoRepository shopInfoRepository;
+    private final AddressRepository addressRepository;
 
     //通过账号查找用户
     public User getUser(String account) {
@@ -80,5 +84,39 @@ public class UserService {
         }
         List<User> merchants = userRepository.findAllByRole(User.BUSINESS);
         return ResultVo.success( merchants);
+    }
+//    查看用户余额
+    @Transactional
+    public Integer getBalance(String uid) {
+        User user = userRepository.findById(uid).orElse(null);
+
+        return user.getBalance();
+    }
+//    充值
+    @Transactional
+    public void recharge(String uid, Integer amount) {
+        User user = userRepository.findById(uid).orElse(null);
+        user.setBalance(user.getBalance() + amount);
+        userRepository.save(user);
+    }
+//   获取用户信息
+    @Transactional
+    public UserAddress getUserInfo(String uid) {
+        return userRepository.findUserAddressByUserId(uid);
+    }
+//    新建/更新地址
+    @Transactional
+    public void updateAddress(String uid, String address) {
+        Address address1 = addressRepository.findAddressByCustomerId(uid);
+        if(address1 == null) {
+            Address a = Address.builder()
+                    .customerId(uid)
+                    .address(address)
+                    .build();
+                    addressRepository.save(a);
+        }else {
+            address1.setAddress( address);
+            addressRepository.save(address1);
+        }
     }
 }
