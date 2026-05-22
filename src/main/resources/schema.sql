@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS `order` (
                          `quantity`          INT          NOT NULL COMMENT '购买数量',
                          `total_amount`      INT          NOT NULL COMMENT '订单总金额（单位：分）',
                          `address`           VARCHAR(512) NOT NULL COMMENT '收货地址快照',
-                         `order_status`      VARCHAR(32)  NOT NULL COMMENT '订单状态（如待付款/已付款/已发货/已完成/已取消）',
+                         `order_status`      INT unsigned  NOT NULL COMMENT '订单状态（如待付款/已付款/已发货/已完成/已取消）',
                          `create_time`       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                          `update_time`       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
                          PRIMARY KEY (`order_id`),
@@ -137,3 +137,19 @@ CREATE TABLE IF NOT EXISTS `order` (
                          KEY `idx_shop_id` (`shop_id`),
                          KEY `idx_order_status` (`order_status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单表';
+CREATE TABLE IF NOT EXISTS `review` (
+                             `review_id` varchar(64) NOT NULL COMMENT '评价ID（主键）',
+                             `order_id` varchar(64) DEFAULT NULL COMMENT '关联订单ID',
+                             `order_no` varchar(64) DEFAULT NULL COMMENT '关联订单编号',
+                             `customer_id` varchar(64) DEFAULT NULL COMMENT '用户ID',
+                             `shop_id` varchar(64) DEFAULT NULL COMMENT '店铺ID',
+                             `nickname` varchar(100) DEFAULT NULL COMMENT '用户昵称',
+                             `image` varchar(1024) DEFAULT NULL COMMENT '评价图片（多个用逗号分隔）',
+                             `content` text DEFAULT NULL COMMENT '评价内容',
+                             `review_type` int unsigned DEFAULT NULL COMMENT '评价类型 1-好评 2-中评 3-差评',
+                             `analysis` text default  null comment 'AI分析结果',
+                             `reply_content` text DEFAULT NULL COMMENT '商家回复内容',
+                             `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                             `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                             PRIMARY KEY (`review_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品评价表';
