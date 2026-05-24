@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `shop_info` (
                              `second_category` VARCHAR(32) NULL COMMENT '二级类目编码',
                              `address` VARCHAR(500) NOT NULL COMMENT '店铺物理地址',
                              `business_license` VARCHAR(20) NOT NULL COMMENT '营业执照注册号',
+                             `business_image` VARCHAR(512) NULL COMMENT '营业执照注册图片访问地址',
                              `legal_person` VARCHAR(10) NOT NULL COMMENT '法人姓名',
                              `status`  tinyint unsigned not null default 1 COMMENT '店铺状态：正常0/禁用1/待审核2',
                              `audit_reason` VARCHAR(255) NULL COMMENT '审核原因/驳回理由',

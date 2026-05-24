@@ -30,6 +30,7 @@ public class MerchantShopResultSetExtractor implements ResultSetExtractor<List<M
                     .secondCategory(rs.getString("second_category"))
                     .address(rs.getString("address"))
                     .businessLicense(rs.getString("business_license"))
+                    .businessImage(rs.getString("business_image"))
                     .status(rs.getInt("status"))
                     .auditReason(rs.getString("audit_reason"))
                     .updateTime(rs.getObject("update_time", LocalDateTime.class))

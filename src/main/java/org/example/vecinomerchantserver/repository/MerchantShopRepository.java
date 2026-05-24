@@ -16,6 +16,7 @@ select u.id ,s.id,u.nickname,u.account,u.phone,s.shop_name ,
        s.status,
        s.legal_person ,
        s.business_license,
+       s.business_image,
        s.audit_reason,
        s.update_time
 

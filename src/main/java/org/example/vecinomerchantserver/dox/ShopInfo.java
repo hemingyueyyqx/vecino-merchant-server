@@ -24,6 +24,7 @@ public class ShopInfo {
     private String businessId;
     private String address;
     private String businessLicense;
+    private String businessImage;
     private String legalPerson;
     private Integer status;
     private String auditReason;

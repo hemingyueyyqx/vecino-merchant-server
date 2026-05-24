@@ -31,6 +31,7 @@ public class MerchantShop {
     private String secondCategory;
     private String address;      // 店铺地址
     private String businessLicense; // 营业执照
+    private String businessImage;
     private Integer status;       // 店铺状态 0正常 1禁用 2待审核
     private String auditReason;
     private LocalDateTime updateTime; // 申请时间

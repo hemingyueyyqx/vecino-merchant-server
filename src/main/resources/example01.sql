@@ -205,3 +205,66 @@ UPDATE category_second SET sort =
 
                                    ELSE 0
                                    END;
+-- 新增字段：营业执照注册图片访问地址
+ALTER TABLE `shop_info`
+    ADD COLUMN `business_license_img` VARCHAR(512) NULL COMMENT '营业执照注册图片访问地址' AFTER `legal_person`;
+-- 第一步：插入10条【商户角色】用户数据（完全匹配user表结构，唯一约束+字段合规）
+INSERT INTO `user` (
+    `id`, `account`, `nickname`, `phone`, `password`, `role`, `balance`
+) VALUES
+-- 商户1
+('biz_001', 'merchant_001', '李梅', '13800138001', '$2a$10$Z8H4k7s9F2d5A1g0J3k6L8s9F2d5A1g0', 'Sj08', 500),
+-- 商户2
+('biz_002', 'merchant_002', '张婷', '13800138002', '$2a$10$Z8H4k7s9F2d5A1g0J3k6L8s9F2d5A1g1', 'Sj08', 300),
+-- 商户3
+('biz_003', 'merchant_003', '王芳', '13800138003', '$2a$10$Z8H4k7s9F2d5A1g0J3k6L8s9F2d5A1g2', 'Sj08', 0),
+-- 商户4
+('biz_004', 'merchant_004', '刘勇', '13800138004', '$2a$10$Z8H4k7s9F2d5A1g0J3k6L8s9F2d5A1g3', 'Sj08', 800),
+-- 商户5
+('biz_005', 'merchant_005', '陈强', '13800138005', '$2a$10$Z8H4k7s9F2d5A1g0J3k6L8s9F2d5A1g4', 'Sj08', 200),
+-- 商户6
+('biz_006', 'merchant_006', '赵海', '13800138006', '$2a$10$Z8H4k7s9F2d5A1g0J3k6L8s9F2d5A1g5', 'Sj08', 0),
+-- 商户7
+('biz_007', 'merchant_007', '孙萌', '13800138007', '$2a$10$Z8H4k7s9F2d5A1g0J3k6L8s9F2d5A1g6', 'Sj08', 1000),
+-- 商户8
+('biz_008', 'merchant_008', '周明', '13800138008', '$2a$10$Z8H4k7s9F2d5A1g0J3k6L8s9F2d5A1g7', 'Sj08', 400),
+-- 商户9
+('biz_009', 'merchant_009', '吴文', '13800138009', '$2a$10$Z8H4k7s9F2d5A1g0J3k6L8s9F2d5A1g8', 'Sj08', 0),
+-- 商户10
+('biz_010', 'merchant_010', '郑茶', '13800138010', '$2a$10$Z8H4k7s9F2d5A1g0J3k6L8s9F2d5A1g9', 'Sj08', 600);
+
+-- 第二步：插入10条对应店铺数据（business_id 严格关联 user.id，无外键报错）
+INSERT INTO `shop_info` (
+    `id`, `business_id`, `shop_name`, `first_category`, `second_category`,
+    `address`, `business_license`, `legal_person`, `status`, `audit_reason`
+) VALUES
+-- 1. 鲜花绿植-鲜花店
+('shop_001', 'biz_001', '花香四溢鲜花店', 'flower', 'flower_shop',
+ '北京市朝阳区建国路88号现代城5层', '91110105MA01234567', '李梅', 0, NULL),
+-- 2. 服饰鞋帽-女装店
+('shop_002', 'biz_002', '时尚伊人女装馆', 'clothes', 'women_clothes',
+ '上海市浦东新区张江路123号科创大厦1楼', '91310115MA02345678', '张婷', 0, NULL),
+-- 3. 美妆日化-品牌专卖店（待审核）
+('shop_003', 'biz_003', '悦颜美妆专卖店', 'beauty', 'beauty_brand',
+ '广州市天河区天河路385号太古汇一座', '91440106MA03456789', '王芳', 2, '资料提交中，等待平台审核'),
+-- 4. 母婴玩具-综合母婴店
+('shop_004', 'biz_004', '宝贝乐园母婴馆', 'baby_toy', 'baby_mix',
+ '深圳市南山区科技园8号腾讯大厦旁', '91440305MA04567890', '刘勇', 0, NULL),
+-- 5. 水果类-果切店
+('shop_005', 'biz_005', '鲜切果坊', 'fruit', 'cut_fruit',
+ '杭州市西湖区文二路158号西湖国际大厦', '91330106MA05678901', '陈强', 0, NULL),
+-- 6. 食材-海鲜水产店（禁用，驳回理由）
+('shop_006', 'biz_006', '鲜享海鲜水产店', 'food_material', 'seafood',
+ '青岛市市南区香港中路69号麦凯乐商场', '91370202MA06789012', '赵海', 1, '营业执照信息与法人不符'),
+-- 7. 宠物类-宠物食品用品店
+('shop_007', 'biz_007', '萌宠之家用品店', 'pet', 'pet_food_goods',
+ '成都市锦江区春熙路步行街1号', '91510104MA07890123', '孙萌', 0, NULL),
+-- 8. 超市便利-小型便利店
+('shop_008', 'biz_008', '邻里便民小超市', 'supermarket', 'mini_shop',
+ '武汉市洪山区光谷大道16号光谷天地', '91420111MA08901234', '周明', 0, NULL),
+-- 9. 日用百货-文具办公用品店（待审核）
+('shop_009', 'biz_009', '书香文创办公用品店', 'daily_goods', 'stationery',
+ '西安市雁塔区高新路50号高新大都荟', '91610113MA09012345', '吴文', 2, '补充店铺门头照后审核'),
+-- 10. 酒水茶饮-茶行
+('shop_010', 'biz_010', '茗香茶行', 'drink_wine', 'tea_shop',
+ '苏州市姑苏区观前街212号玄妙广场', '91320508MA00123456', '郑茶', 0, NULL);

@@ -28,6 +28,7 @@ public class ShopService {
             s.setSecondCategory(shopInfo.getSecondCategory());
             s.setAddress(shopInfo.getAddress());
             s.setBusinessLicense(shopInfo.getBusinessLicense());
+            s.setBusinessImage(shopInfo.getBusinessImage());
             s.setLegalPerson(shopInfo.getLegalPerson());
             s.setStatus(2);
             s.setAuditReason("");
@@ -40,6 +41,7 @@ public class ShopService {
                     .businessId(uid)
                     .address(shopInfo.getAddress())
                     .businessLicense(shopInfo.getBusinessLicense())
+                    .businessImage(shopInfo.getBusinessImage())
                     .legalPerson(shopInfo.getLegalPerson())
                     .auditReason("")
                     .status(2)
