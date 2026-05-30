@@ -6,6 +6,7 @@ import org.example.vecinomerchantserver.dox.ProductSku;
 import org.example.vecinomerchantserver.dox.ProductSpu;
 import org.example.vecinomerchantserver.dox.ShopInfo;
 import org.example.vecinomerchantserver.dox.User;
+import org.example.vecinomerchantserver.dto.BatchAuditStatusRequest;
 import org.example.vecinomerchantserver.dto.BatchStatusRequest;
 import org.example.vecinomerchantserver.dto.ProductInfo;
 import org.example.vecinomerchantserver.repository.ProductRepository;
@@ -42,6 +43,15 @@ public class ProductService {
         Integer auditStatus = spu.getAuditStatus();
         return productRepository.findProductInfo(shopId, spuName, spuStatus, auditStatus);
     }
+    @Transactional
+    public List<ProductInfo> findProductInfos(ProductInfo spu) {
+        log.info("productInfo11111:{}",spu);
+        String spuName = spu.getSpuName();
+        Integer spuStatus = spu.getSpuStatus();
+        Integer auditStatus = spu.getAuditStatus();
+        String shopName = spu.getShopName();
+        return productRepository.findProductInfos(spuName, spuStatus, auditStatus, shopName);
+    }
 //    添加商品
     @Transactional
     public void addProduct(ProductInfo productInfo, String uid) {
@@ -53,9 +63,9 @@ public class ProductService {
                 .spuName(productInfo.getSpuName())
                 .mainImage(productInfo.getMainImage())
                 .detail(productInfo.getDetail())
-                .auditStatus(productInfo.getAuditStatus() != null ? productInfo.getAuditStatus() : 1) // 默认待审核
+                .auditStatus(productInfo.getAuditStatus() != null ? productInfo.getAuditStatus() : 0) // 默认待审核
                 .auditRemark(productInfo.getAuditRemark())
-                .status(productInfo.getSpuStatus() != null ? productInfo.getSpuStatus() : 1) // 默认上架状态
+                .status(productInfo.getSpuStatus() != null ? productInfo.getSpuStatus() : 0) // 默认上架状态
                 .build();
 
         // 保存SPU到数据库
@@ -93,9 +103,13 @@ public class ProductService {
             }
             if (spu.getAuditStatus() != null) {
                 productSpu.setAuditStatus(spu.getAuditStatus());
+            }else{
+                productSpu.setAuditStatus(0);
             }
             if (spu.getAuditRemark() != null) {
                 productSpu.setAuditRemark(spu.getAuditRemark());
+            }else {
+                productSpu.setAuditRemark("");
             }
             if (spu.getStatus() != null) {
                 productSpu.setStatus(spu.getStatus());
@@ -136,6 +150,21 @@ public class ProductService {
             ProductSpu productSpu = productSpuRepository.findById(spuId).orElse(null);
             if (productSpu != null) {
                 productSpu.setStatus(status);
+                productSpuRepository.save(productSpu);
+            }
+        }
+    }
+//    商品批量审核驳回
+    @Transactional
+    public void batchUpdateAuditStatus(BatchAuditStatusRequest request) {
+        List<String> spuIds = request.getSpuIds();
+        Integer auditStatus = request.getAuditStatus();
+        String auditRemark = request.getAuditRemark();
+        for (String spuId : spuIds) {
+            ProductSpu productSpu = productSpuRepository.findById(spuId).orElse(null);
+            if (productSpu != null) {
+                productSpu.setAuditStatus(auditStatus);
+                productSpu.setAuditRemark(auditRemark);
                 productSpuRepository.save(productSpu);
             }
         }
