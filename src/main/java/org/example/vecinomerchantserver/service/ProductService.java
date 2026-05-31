@@ -2,17 +2,9 @@ package org.example.vecinomerchantserver.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.vecinomerchantserver.dox.ProductSku;
-import org.example.vecinomerchantserver.dox.ProductSpu;
-import org.example.vecinomerchantserver.dox.ShopInfo;
-import org.example.vecinomerchantserver.dox.User;
-import org.example.vecinomerchantserver.dto.BatchAuditStatusRequest;
-import org.example.vecinomerchantserver.dto.BatchStatusRequest;
-import org.example.vecinomerchantserver.dto.ProductInfo;
-import org.example.vecinomerchantserver.repository.ProductRepository;
-import org.example.vecinomerchantserver.repository.ProductSkuRepository;
-import org.example.vecinomerchantserver.repository.ProductSpuRepository;
-import org.example.vecinomerchantserver.repository.ShopInfoRepository;
+import org.example.vecinomerchantserver.dox.*;
+import org.example.vecinomerchantserver.dto.*;
+import org.example.vecinomerchantserver.repository.*;
 import org.example.vecinomerchantserver.vo.ResultVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +19,7 @@ public class ProductService {
     private final ShopInfoRepository shopInfoRepository;
     private final ProductSpuRepository productSpuRepository;
     private final ProductSkuRepository productSkuRepository;
+    private final CouponRepository couponRepository;
     @Transactional
     public List<ProductInfo> findProductInfo(String uid, ProductInfo spu) {
         String shopId;
@@ -166,6 +159,32 @@ public class ProductService {
                 productSpu.setAuditStatus(auditStatus);
                 productSpu.setAuditRemark(auditRemark);
                 productSpuRepository.save(productSpu);
+            }
+        }
+    }
+    @Transactional
+    public void batchUpdateCouponAuditStatus(CouponAuditStatusRequest request) {
+        List<String> couponIds = request.getCouponIds();
+        Integer auditStatus = request.getAuditStatus();
+        String auditRemark = request.getAuditRemark();
+        for (String c : couponIds) {
+            Coupon coupon = couponRepository.findById(c).orElse(null);
+            if (coupon != null) {
+                coupon.setAuditStatus(auditStatus);
+                coupon.setAuditRemark(auditRemark);
+                couponRepository.save(coupon);
+            }
+        }
+    }
+    @Transactional
+    public void batchUpdateCouponStatus(CouponStatusRequest request) {
+        List<String> couponIds = request.getCouponIds();
+        Integer couponStatus = request.getCouponStatus();
+        for (String c : couponIds) {
+            Coupon coupon = couponRepository.findById(c).orElse(null);
+            if (coupon != null) {
+                coupon.setCouponStatus(couponStatus);
+                couponRepository.save(coupon);
             }
         }
     }

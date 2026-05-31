@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS `user`(
                         `phone` CHAR(11) NOT NULL COMMENT '手机号（11位）',
                         `password` VARCHAR(255) NOT NULL COMMENT '密码（哈希存储，不存明文）',
                         `role` char(4) NOT NULL COMMENT '角色：商户/管理员/普通用户',
-                        `balance` int unsigned NOT NULL DEFAULT 0 COMMENT '用户余额',
+                        `balance` int unsigned DEFAULT 0 COMMENT '用户余额',
                         `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                         `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
                         PRIMARY KEY (`id`),
@@ -154,3 +154,45 @@ CREATE TABLE IF NOT EXISTS `review` (
                              `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
                              PRIMARY KEY (`review_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品评价表';
+-- 优惠券表
+CREATE TABLE IF NOT EXISTS `coupon`
+(
+    `coupon_id`     VARCHAR(32)    NOT NULL COMMENT '优惠券主键ID',
+    `coupon_name`   VARCHAR(100)   NOT NULL COMMENT '优惠券名称',
+    `coupon_type`   TINYINT        NOT NULL COMMENT '优惠券类型 0-满减 1-无门槛',
+    `coupon_status` TINYINT        NOT NULL DEFAULT 0 COMMENT '优惠券状态 0-禁用 1-启用',
+    `audit_status` tinyint NOT NULL DEFAULT 0 COMMENT '审核状态 0-待审核 1-审核通过 2-审核拒绝',
+    `audit_remark` varchar(255) DEFAULT NULL COMMENT '审核意见',
+    `full_amount`   INT            DEFAULT 0 COMMENT '满减门槛金额(单位：元)',
+    `reduce_amount` INT            DEFAULT 0 COMMENT '减免金额(单位：元)',
+    `discount`      INT            DEFAULT 0 COMMENT '折扣值 例：85=8.5折',
+    `total_count`   INT            NOT NULL COMMENT '发放总数量',
+    `wmk_amount`    INT            DEFAULT 0 COMMENT '无门槛金额(单位：元)',
+    `shop_id`       VARCHAR(32)    NOT NULL COMMENT '所属店铺ID',
+    `shop_name`     VARCHAR(128) NOT NULL COMMENT '店铺名称快照',
+    `start_time`    VARCHAR(50)       NOT NULL COMMENT '生效开始时间',
+    `end_time`      VARCHAR(50)      NOT NULL COMMENT '生效结束时间',
+    `create_time`   DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`   DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    -- 主键约束
+    PRIMARY KEY (`coupon_id`),
+    -- 索引：按店铺查询优惠券（业务常用）
+    INDEX `idx_shop_id` (`shop_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci
+    COMMENT = '优惠券表';
+CREATE TABLE  IF NOT EXISTS `platform_activity` (
+                                       `activity_id` varchar(64) NOT NULL COMMENT '活动ID(主键)',
+                                       `activity_name` varchar(100) NOT NULL COMMENT '活动名称',
+                                       `activity_theme` varchar(60) DEFAULT NULL COMMENT '活动主题',
+                                       `activity_type` varchar(30) DEFAULT NULL COMMENT '活动类型(FULL_REDUCTION/COUPON/SECKILL)',
+                                       `start_time` varchar(50) NOT NULL COMMENT '活动开始时间',
+                                       `end_time` varchar(50) NOT NULL COMMENT '活动结束时间',
+                                       `full_reduction_rule` varchar(255) DEFAULT NULL COMMENT '满减/优惠规则',
+                                       `target_category` varchar(255) DEFAULT NULL COMMENT '目标参与类目(逗号分隔存储)',
+                                       `target_merchant_type` varchar(30) DEFAULT NULL COMMENT '目标商家群体',
+                                       `budget` int DEFAULT NULL COMMENT '活动预算(元)',
+                                       `activity_desc` text DEFAULT NULL COMMENT '商家端活动说明',
+                                       PRIMARY KEY (`activity_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='平台营销活动配置表';

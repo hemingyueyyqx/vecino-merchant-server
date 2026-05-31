@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.vecinomerchantserver.dox.ProductSku;
 import org.example.vecinomerchantserver.dox.ProductSpu;
-import org.example.vecinomerchantserver.dto.BatchAuditStatusRequest;
-import org.example.vecinomerchantserver.dto.BatchStatusRequest;
-import org.example.vecinomerchantserver.dto.ProductInfo;
+import org.example.vecinomerchantserver.dto.*;
 import org.example.vecinomerchantserver.service.ProductService;
 import org.example.vecinomerchantserver.vo.ResultVo;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +55,18 @@ public class ProductController {
     public ResultVo batchAuditStatus(@RequestBody BatchAuditStatusRequest request) {
         log.info("request:{}",request);
         productService.batchUpdateAuditStatus(request);
+        return ResultVo.ok();
+    }
+    @PutMapping("coupon/batch/audit")
+    public ResultVo couponAuditStatus(@RequestBody CouponAuditStatusRequest request) {
+        log.info("request:{}",request);
+        productService.batchUpdateCouponAuditStatus(request);
+        return ResultVo.ok();
+    }
+    @PutMapping("coupon/batch/status")
+    public ResultVo couponAuditStatus(@RequestBody CouponStatusRequest request) {
+        log.info("request:{}",request);
+        productService.batchUpdateCouponStatus(request);
         return ResultVo.ok();
     }
 
